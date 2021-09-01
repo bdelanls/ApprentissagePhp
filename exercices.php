@@ -15,10 +15,11 @@
         <h2>Les exercices en php</h2>
         <ol>
             <li>Premier exo</li>
+            <li>Lien GitHub : <a href="https://github.com/bdelanls/ApprentissagePhp.git">https://github.com/bdelanls/ApprentissagePhp.git</a></li>
         </ol>
 
     </div>
-  
+
 
 </body>
 </html>
