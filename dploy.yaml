@@ -1,0 +1,10 @@
+dev:
+    scheme: ftp
+    host: ftp.vbha2249.odns.fr
+    port: 21
+    user: php@vbha2249.odns.fr
+    pass: bdelanls94php
+    check: true
+    exclude: ["dploy.yaml", ".gitignore"]
+    path:
+        remote: /
