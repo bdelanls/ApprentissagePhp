@@ -36,15 +36,13 @@
             $keyVigenere[$keyArr[$j]] = $tab2[$j];            
         }
 
-        $letter2 = $tab2[0];
+        $tab2[] = $tab2[0];
         array_splice($tab2, 0, 1);
-        $tab2[] = $letter2;
-
+        
         $tabVigenere[$keyArr[$i]] = $keyVigenere;
 
-        $letter1 = $tab1[0];
+        $tab1[] = $tab1[0];
         array_splice($tab1, 0, 1);
-        $tab1[] = $letter1;
 
     }
     
