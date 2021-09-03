@@ -19,6 +19,7 @@
             <li><a href="exo-2.php">Exercice 2</a> : décoder des chaînes de caractères</li>
             <li><a href="exo-3.php">Exercice 3</a> : travailler avec des tableaux</li>
             <li><a href="exo-4.php">Exercice 4</a> : travailler avec des boucles</li>
+            <li><a href="exo-5.php">Exercice 5</a> : encodage et décodage avec un formulaire</li>
         </ul>
 
     </div>
