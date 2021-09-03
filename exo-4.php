@@ -25,24 +25,19 @@
 
     $keyVigenere = [];
 
-    $tab1 = $keyArr;
-    $tab2 = $keyArr;
-
+    $tab = $keyArr;
 
     for($i = 0; $i<count($keyArr); $i++){
 
         for($j = 0; $j<count($keyArr); $j++){
             
-            $keyVigenere[$keyArr[$j]] = $tab2[$j];            
+            $keyVigenere[$keyArr[$j]] = $tab[$j];            
         }
 
-        $tab2[] = $tab2[0];
-        array_splice($tab2, 0, 1);
-        
         $tabVigenere[$keyArr[$i]] = $keyVigenere;
 
-        $tab1[] = $tab1[0];
-        array_splice($tab1, 0, 1);
+        $tab[] = $tab[0];
+        array_splice($tab, 0, 1);
 
     }
     
