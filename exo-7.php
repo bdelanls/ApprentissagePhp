@@ -12,38 +12,47 @@
     <?php include('./partial/_navBar.php') ?>
 
     <div class="container">
-        <h1>Exercice 5</h1>
+        <h1>Exercice 7</h1>
 
         <?php 
 
-        $message = "";
-        $messageEncode = "";
-        $key = "";
+        require("script/cryptage.php");
 
+        $text = "";
+        $action = "";
+        $key = "";
+        $result="";
         $formValid = false;
 
             if (!empty($_POST)) {
-                if (isset($_POST["message"])){
-                    $message = strip_tags($_POST["message"]);
+                if (isset($_POST["text"])){
+                    $text = strip_tags($_POST["text"]);
                 }
                 if (isset($_POST["key"])){
                     $key = strip_tags($_POST["key"]);
                 }
-                if (isset($_POST["messageEncode"])){
-                    $messageEncode = strip_tags($_POST["messageEncode"]);
+                if (isset($_POST["action"])){
+                    $action = strip_tags($_POST["action"]);
                 }
                 
                 // Alert message !
                 $arrAlert = [];
 
                 if (empty($key)){
-                    $arrAlert[] = "La clé est obligatoire.";
+                    $arrAlert[] = "La clé est obligatoire. Ça doit être un mot pour Vigenère et un chiffre entre 1 et 10 pour César.";
+                }else if (!preg_match('#^[a-zA-Z]*$#',$key) && ($action === "encodeVigenere" || $action === "decodeVigenere")){
+                    $arrAlert[] = "La clé doit être un mot ! Pas d'accents, de caracères spéciaux et d'espace.";
+                }else if(($key > 1 && $key > 10) && ($action === "encodeCesar" || $action === "decodeCesar")){
+                    $arrAlert[] = "La clé doit être un chiffre entre 1 et 10.";
                 }
-                if (empty($message) && empty($messageEncode)){
-                    $arrAlert[] = "Le champ \"message\" ou \"message codé\" doit être renseigné.";
+
+                if (empty($text)){
+                    $arrAlert[] = "Vous devez mettre un texte.";
+                }else if(!preg_match('#^[a-zA-Z\s]*$#',$text)){
+                    $arrAlert[] = "Pas d\'accents ni de caracères spéciaux dans le texte.";
                 }
-                if (!empty($message) && !empty($messageEncode)){
-                    $arrAlert[] = "Seul un champ doit être renseigné, \"message\" ou \"message codé\"";
+                if (empty($action)){
+                    $arrAlert[] = "Quelle action doit-être fait sur le texte ?";
                 }
 
                 if (!empty($arrAlert)){
@@ -58,12 +67,7 @@
                     echo '</ul>Essayez encore.
                         </div>';
 
-                }else  if(!preg_match('#^[a-zA-Z\s]*$#',$message) || !preg_match('#^[a-zA-Z]*$#',$key) || !preg_match('#^[a-zA-Z\s]*$#',$messageEncode)){
-                    echo '
-                    <div class="alert alert-dismissible alert-danger">
-                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      <strong>Attention !</strong> Pas d\'accents ni de caracères spéciaux et pas d\'espace dans la clé, essayez encore
-                    </div>';
+                
                 }else{
                     $formValid = !$formValid;
                 }
@@ -72,104 +76,32 @@
                 
                 if($formValid){
                     
-                    $message = strtoupper($message);
+
+                    $text = strtoupper($text);
                     $key = strtoupper($key);
-                    $messageEncode = strtoupper($messageEncode);
 
                     $tabVigenere = createVigenere();
+                    $tabCesar = initCesar();
 
-                    if(empty($message)){
-                        // decode
-                        $message = decode($messageEncode, $key, $tabVigenere);
 
-                    }else{
-                        // encode
-                        $messageEncode = encode($message, $key, $tabVigenere);
+                    switch ($action) {
+                        case "encodeVigenere":
+                            $result = encode($text, $key, $tabVigenere);
+                            break;
+                        case "decodeVigenere":
+                            $result = decode($text, $key, $tabVigenere);
+                            break;
+                        case "encodeCesar":
+                            $result = encodeCesar($text, $key, $tabCesar);
+                            break;
+                        case "decodeCesar":
+                            $result = decodeCesar($text, $key, $tabCesar);
+                            break;    
                     }
-                }
-            }
-
-        function createVigenere(){
-            $keyArr = [];
-            $tabVigenere = [];
-            $keyString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        
-            $keyArr = str_split($keyString);
-        
-            $keyVigenere = [];
-        
-            $tab = $keyArr;
-        
-            for($i = 0; $i<count($keyArr); $i++){
-        
-                for($j = 0; $j<count($keyArr); $j++){
                     
-                    $keyVigenere[$keyArr[$j]] = $tab[$j];            
-                }
-        
-                $tabVigenere[$keyArr[$i]] = $keyVigenere;
-        
-                $tab[] = $tab[0];
-                array_splice($tab, 0, 1);
-            }
-            return $tabVigenere;
-        }
-
-        function encode($txt, $key, $tabVigenere){
-            $tabCleBackend = str_split($key);
-            $tabMessage = str_split($txt);
-            $cryptedMessage = "";
-            $numCle = 0;
-        
-            for($i = 0; $i < count($tabMessage); $i++){
-        
-                if($tabMessage[$i] === " "){
-                    $cryptedMessage .= " ";
-                }else{
-                    $cryptedMessage .= $tabVigenere[$tabMessage[$i]][$tabCleBackend[$numCle]];
-                }
-        
-                if($numCle == count($tabCleBackend) -1){
-                    $numCle = 0;
-                }else{
-                    $numCle++ ;
+                    
                 }
             }
-
-            return $cryptedMessage;
-        }
-
-        function decode($txt, $key, $tabVigenere){
-            $tabCleDecode = str_split($key);
-            $tabMessageEncode = str_split($txt);
-            $decodedMessage = "";
-
-            $numCle = 0;
-
-            for($i = 0; $i < count($tabMessageEncode); $i++){
-
-                if($tabMessageEncode[$i] === " "){
-                    $decodedMessage .= " ";
-                }else{
-        
-                    foreach($tabVigenere as $key => $value){
-                        if($tabVigenere[$key][$tabCleDecode[$numCle]] === $tabMessageEncode[$i]){
-                            $decodedMessage .= $key;
-                        }
-                    }
-                }
-        
-                if($numCle == count($tabCleDecode) -1){
-                    $numCle = 0;
-                }else{
-                    $numCle++ ;
-                }
-            }
-            return $decodedMessage;
-        }
-
-
-           //var_dump($message, $key, $messageEncode);
 
         ?>
 
@@ -177,33 +109,57 @@
         <p>Vous pouvez entrer un message et une clé ou la clé et le message à décoder.</p>
         <form method="post">
             <div class="mb-3">
-                <label for="message" class="form-label">Le message : </label>
-                <input type="text" name="message" id="message" class="form-control" value="<?php echo $message ?>">
+                <label for="message" class="form-label">Le texte : </label>
+                <textarea name="text" id="text" cols="30" rows="5" class="form-control"><?php echo $text ?></textarea>
             </div>
             <div class="mb-3">
                 <label for="key" class="form-label">La clé : </label>
                 <input type="text" name="key" id="key"  class="form-control" value="<?php echo $key ?>">
             </div>
             <div class="mb-3">
-                <label for="messageEncode" class="form-label">Le message codé : </label>
-                <input type="text" name="messageEncode" id="messageEncode"  class="form-control" value="<?php echo $messageEncode ?>">
+                <label for="action" class="form-label">Action à effectuer : </label>
+                <select name="action" id="action" class="form-select" >
+                    <option value="" selected>--Choisissez un action--</option>
+                    <option value="encodeVigenere" <?php if($action == "encodeVigenere"){echo "selected";} ?>>Encodage par Vigenère</option>
+                    <option value="decodeVigenere" <?php if($action == "decodeVigenere"){echo "selected";} ?>>Décodage par Vigenère</option>
+                    <option value="encodeCesar" <?php if($action == "encodeCesar"){echo "selected";} ?>>Encodage par César</option>
+                    <option value="decodeCesar" <?php if($action == "decodeCesar"){echo "selected";} ?>>Décodage par César</option>
+                </select>
             </div>
             <div class="mb-3">
                 <input type="reset" value="Annuler"  class="btn btn-secondary" onclick="emptyForm();">
-                <input type="submit" value="Vigenériser"  class="btn btn-primary">
+                <input type="submit" value="Coder ou décoder"  class="btn btn-primary" id="submit">
             </div>
+            <div>
+            <label for="result" class="form-label">Resultat : </label>
+            <textarea name="result" id="result" cols="30" rows="5" class="form-control"><?php echo $result ?></textarea>
+            </div>
+            
         </form>
 
     </div>
   
 <script>
+    var action = document.querySelector("#action");
+    var button = document.querySelector("#submit");
+    
+    action.addEventListener('click', e =>{
+        if(action.value === "encodeVigenere" || action.value === "decodeVigenere"){
+            button.value = "Vigenériser";
+        }else if(action.value === "encodeCesar" || action.value === "decodeCesar"){ 
+            button.value = "Cesariser";
+        }else{
+            button.value = "Coder ou décoder";
+        }
+    });
+
     function emptyForm(){
-        var messageValue = document.querySelector('#message');
+        var textValue = document.querySelector('#text');
         var keyValue = document.querySelector('#key');
-        var messageEncodeValue = document.querySelector('#messageEncode');
-        messageValue.defaultValue = "";
+        var result = document.querySelector('#result');
+        text.defaultValue = "";
         keyValue.defaultValue = "";
-        messageEncodeValue.defaultValue = "";
+        result.defaultValue = "";
         
     }
 </script>
