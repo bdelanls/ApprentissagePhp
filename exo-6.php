@@ -22,11 +22,26 @@
                $try = strip_tags($_POST["try"]);
            }
            if (isset($try)) {
-               if ($code == $try) {
-                   $result = "bien joué, le code est $try";
-               } else {
-                   $result = "non, le code n'est pas $try";
-               }
+
+                if ($code == $try) {
+                    $result = "bien joué, le code est $try";
+                } else {
+                    $result = "non, le code n'est pas $try";
+
+                    $test = 0;
+                    while ($test <= 10000) {
+
+                        if($test === $code){
+                            $response = $test;
+                            break;
+                        }
+                        $test++;
+                    }
+                }
+
+                
+
+               
            }
        }
        // TO DO with while
