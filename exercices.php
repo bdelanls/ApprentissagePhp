@@ -20,6 +20,7 @@
             <li><a href="exo-3.php">Exercice 3</a> : travailler avec des tableaux</li>
             <li><a href="exo-4.php">Exercice 4</a> : travailler avec des boucles</li>
             <li><a href="exo-5.php">Exercice 5</a> : encodage et décodage avec un formulaire</li>
+            <li><a href="exo-6.php">Exercice 6</a> : mise en oeuvre de la boucle while</li>
         </ul>
 
     </div>
