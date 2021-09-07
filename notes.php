@@ -11,7 +11,7 @@
 <body>
     <?php include('./partial/_navBar.php') ?>
     <div class="container">
-        <h1>Notes</h1>
+        <h1>Page de prise de note</h1>
 
     </div>
   
