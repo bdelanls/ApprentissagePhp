@@ -142,8 +142,13 @@
 <script>
     var action = document.querySelector("#action");
     var button = document.querySelector("#submit");
+    bt();
     
     action.addEventListener('click', e =>{
+        bt();
+    });
+
+    function bt(){
         if(action.value === "encodeVigenere" || action.value === "decodeVigenere"){
             button.value = "Vigenériser";
         }else if(action.value === "encodeCesar" || action.value === "decodeCesar"){ 
@@ -151,7 +156,7 @@
         }else{
             button.value = "Coder ou décoder";
         }
-    });
+    }
 
     function emptyForm(){
         var textValue = document.querySelector('#text');
