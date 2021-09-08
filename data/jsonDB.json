@@ -1,0 +1,8 @@
+{
+    "note": [
+        {
+            "title": "Fonction traitement des variables d'un formulaire",
+            "note": "function treatFormData(array $data, string ...$wanted): array\r\n{\r\n    $values = [];\r\n    foreach ($wanted as $value) {\r\n        if (array_key_exists($value, $data)) {\r\n            \/\/ trim function can be used also\r\n            $actualData = stripslashes(($data[$value]));\r\n            $actualData = htmlspecialchars($actualData);\r\n            $values[$value] = $actualData;\r\n        }\r\n    }\r\n    return $values;\r\n}"
+        }
+    ]
+}
