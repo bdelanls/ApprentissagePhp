@@ -1,3 +1,7 @@
+<?php 
+session_start();
+include('script/functions.php');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,17 +19,25 @@
         <h1>Test</h1>
 
         <pre>
-            ====================================
+====================================
+<?php 
 
 
 
+if (isset($_SESSION["user"])){
+    echo "Bonjour ".$_SESSION["user"]["firstName"] .", vous êtes connecté !";
+}else{
+    echo "Vous êtes inconnu !";
+}
+
+echo "<br>";
+var_dump($_SESSION);
 
 
+    
+?>
 
-            
-
-
-            ====================================
+====================================
         </pre>
 
     </div>
