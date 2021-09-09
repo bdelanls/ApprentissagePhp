@@ -1,6 +1,20 @@
 <?php 
 session_start();
-include('script/functions.php');
+
+$roles = $_SESSION["user"]["role"];
+$roleAdmin = false;
+
+foreach($roles as $role){
+    if($role == "ROLE_ADMIN"){
+        $roleAdmin = true;
+    }
+}
+
+if(!$roleAdmin){
+    header("Location: /");
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,8 +28,10 @@ include('script/functions.php');
 </head>
 <body>
     <?php include('./partial/_navBar.php') ?>
+
     <div class="container">
-        <h1>Accueil</h1>
+        <h1>Page admin</h1>
+        <p>Uniquement accessible à l'administrateur.</p>
 
     </div>
   

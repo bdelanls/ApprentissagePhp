@@ -18,6 +18,29 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/notes.php">Notes</a>
                 </li>
+                <?php 
+                    if(isset($_SESSION["user"])){
+                        
+                        if(in_array("ROLE_ADMIN", $_SESSION["user"]["role"])){
+                            echo '<li class="nav-item">
+                            <a class="nav-link active" href="/admin.php">Admin</a>
+                        </li>';
+                        }
+                    }else{
+
+                        echo '<li class="nav-item">
+                            <a class="nav-link active" href="/inscription.php">Inscription</a>
+                        </li>';
+                    }
+                ?>
+                <li class="nav-item">
+                <?php 
+                if(isset($_SESSION["user"])){
+                    echo '<a class="btn btn-outline-success" href="/deconnexion.php">Déconnexion</a>';
+                }else{
+                    echo '<a class="btn btn-outline-success" href="/connexion.php">Connexion</a>';
+                }
+                ?>
             </ul>
         </div>
     </div>

@@ -1,4 +1,4 @@
 <?php 
 
 define('DBJSON', './data/jsonDB.json');
-define('DBTABLE', ['note']);
+define('DBTABLE', ['note', 'user']);
