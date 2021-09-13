@@ -26,6 +26,10 @@
                             <a class="nav-link active" href="/admin.php">Admin</a>
                         </li>';
                         }
+                        echo '<li class="nav-item">
+                        <a class="nav-link active" href="/compte.php">Mon compte</a>
+                    </li>';
+
                     }else{
 
                         echo '<li class="nav-item">

@@ -62,3 +62,10 @@ function writeDB(array $data): bool
     }
     return $correct;
 }
+
+/**
+ * function test File for uploading
+ */
+function testFile(){
+    
+}

@@ -16,19 +16,32 @@ if (!empty($_POST)) {
 
 $data = openDB();
 
-
 if (isset($name, $firstName, $email, $password)) {
-    $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
+
+    $valid = true;
     
-    array_push($data['user'], [
-        'name' => $name,
-        'firstName' => $firstName,
-        'email' => $email,
-        'password' => $passwordHash,
-        'role' => ["ROLE_USER"],
-    ]);
-    writeDB($data);
-    header("Location: /connexion.php");
+    foreach($data['user'] as $user){
+        if ($user['email'] === $email){
+            $valid = false;
+            break;
+        }
+    }
+
+    if($valid){
+        $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
+        
+        array_push($data['user'], [
+            'name' => $name,
+            'firstName' => $firstName,
+            'email' => $email,
+            'password' => $passwordHash,
+            'role' => ["ROLE_USER"],
+        ]);
+        writeDB($data);
+        header("Location: /connexion.php");
+    }
+    
+
 }
 
 
@@ -50,6 +63,16 @@ if (isset($name, $firstName, $email, $password)) {
 
     <div class="container">
         <h1>Inscription</h1>
+
+        <?php 
+            if (isset($valid) && !$valid){
+                echo '<div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    L\'email existe déjà, choisissez-en un autre.
+                </div>';
+            }
+        ?>
+
         <form method="post">
             <div class="mb-3">
                 <label for="name">Nom : </label>
