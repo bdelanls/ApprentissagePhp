@@ -177,7 +177,7 @@ $photo = $data['user'][$userID]['photo'];
             </div>
             <div class="mb-3">
                 <label for="password">Mot de passe : </label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Lissez vide si vous ne voulez pas modifier votre mot de passe">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Laissez vide si vous ne voulez pas modifier votre mot de passe">
             </div>
             <div class="mb-3">
                 <label for="photo">Photo de profil : </label>
